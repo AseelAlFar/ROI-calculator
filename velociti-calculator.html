@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workforce Inactivity Cost Estimator — Velociti</title>
+<meta name="description" content="See what physical inactivity is costing your UAE organization — in AED. Free estimator built on peer-reviewed research.">
+<meta property="og:title" content="Workforce Inactivity Cost Estimator — Velociti">
+<meta property="og:description" content="Enter your headcount and salary. Get a number. No email required to calculate.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple: #6B4FE0;
+    --purple-light: #EEE9FF;
+    --purple-mid: #C5B5F8;
+    --lime: #C8F04A;
+    --lime-dark: #8BAD1A;
+    --ink: #0F0E13;
+    --ink-muted: #5A5767;
+    --ink-faint: #9E9BAB;
+    --surface: #FFFFFF;
+    --surface-2: #F7F6FB;
+    --surface-3: #F0EEF9;
+    --border: rgba(107, 79, 224, 0.15);
+    --border-strong: rgba(107, 79, 224, 0.3);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface-2);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--purple);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .nav-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .hero { margin-bottom: 2.5rem; }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 36px);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 strong {
+    font-weight: 500;
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: var(--ink-muted);
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 1.25rem;
+  }
+
+  .inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    .inputs-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .input-block label {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .input-block .val-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    display: block;
+    letter-spacing: -0.02em;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--surface-3);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--purple);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--purple);
+  }
+
+  input[type=range]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--purple);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--purple);
+  }
+
+  select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A5767' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+
+  select:focus { border-color: var(--purple); }
+
+  .divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .result-hero {
+    background: var(--ink);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-hero::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: var(--purple);
+    opacity: 0.15;
+  }
+
+  .result-hero .label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0.5rem;
+  }
+
+  .result-hero .big-number {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(32px, 7vw, 48px);
+    font-weight: 500;
+    color: white;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .result-hero .sub-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    max-width: 440px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-hero .sub-text strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .metric {
+    background: var(--surface-3);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+  }
+
+  .metric .m-label {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
+  }
+
+  .metric .m-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .metric .m-sub {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  .sources {
+    font-size: 11px;
+    color: var(--ink-faint);
+    line-height: 1.7;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+  }
+
+  .sources strong {
+    color: var(--ink-muted);
+    font-weight: 500;
+  }
+
+  .velociti-card {
+    background: var(--purple-light);
+    border: 0.5px solid var(--purple-mid);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .velociti-card .vc-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .velociti-card .vc-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--purple);
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+
+  .velociti-card .vc-sub {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  .email-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    display: none;
+  }
+
+  .email-card.visible { display: block; }
+
+  .email-card h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.35rem;
+  }
+
+  .email-card p {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .email-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .email-row input[type=email] {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    outline: none;
+    color: var(--ink);
+    background: var(--surface);
+  }
+
+  .email-row input[type=email]:focus { border-color: var(--purple); }
+
+  .btn-submit {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    background: var(--purple);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+
+  .btn-submit:hover { opacity: 0.88; }
+
+  .skip-link {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: 0.75rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: color 0.15s;
+  }
+
+  .skip-link:hover { color: var(--ink-muted); }
+
+  .email-success {
+    font-size: 13px;
+    color: var(--lime-dark);
+    font-weight: 500;
+    margin-top: 0.75rem;
+    display: none;
+  }
+
+  .disclaimer {
+    font-size: 11px;
+    color: var(--ink-faint);
+    line-height: 1.7;
+    text-align: center;
+    max-width: 500px;
+    margin: 2rem auto 0;
+  }
+
+  .disclaimer a {
+    color: var(--purple);
+    text-decoration: none;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid var(--border);
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  .footer a {
+    color: var(--purple);
+    text-decoration: none;
+  }
+
+  .pulse {
+    animation: pulse 0.4s ease;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <nav class="nav">
+    <a class="logo" href="https://velociti.fitness">velociti</a>
+    <span class="nav-tag">For business</span>
+  </nav>
+
+  <div class="hero">
+    <p class="eyebrow">Free estimator</p>
+    <h1>What is physical inactivity<br><strong>costing your organization?</strong></h1>
+    <p>A calculation built on UAE peer-reviewed data and published occupational health research. Adjust the inputs — see your number in AED. No email required to calculate.</p>
+  </div>
+
+  <div class="card">
+    <p class="section-label">Your organization</p>
+    <div class="inputs-grid">
+      <div class="input-block">
+        <label for="headcount">Number of employees</label>
+        <span class="val-display" id="headcount-val">250</span>
+        <input type="range" id="headcount" min="50" max="5000" step="50" value="250"
+          oninput="onSlider('headcount', this.value)">
+      </div>
+      <div class="input-block">
+        <label for="salary">Avg. monthly salary (AED)</label>
+        <span class="val-display" id="salary-val">15,000</span>
+        <input type="range" id="salary" min="5000" max="60000" step="1000" value="15000"
+          oninput="onSlider('salary', this.value)">
+      </div>
+    </div>
+    <div class="input-block">
+      <label for="industry" style="margin-bottom:0.5rem; display:block; font-size:12px; color:var(--ink-muted)">Industry</label>
+      <select id="industry" onchange="calculate()">
+        <option value="finance">Financial services & banking</option>
+        <option value="tech">Technology & media</option>
+        <option value="retail">Retail & consumer</option>
+        <option value="hospitality">Hospitality & F&B</option>
+        <option value="realestate">Real estate & construction</option>
+        <option value="health">Healthcare & pharma</option>
+        <option value="government">Government & public sector</option>
+        <option value="other" selected>Other / mixed</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="result-hero" id="result-hero">
+    <div class="label">Estimated annual cost of inactivity</div>
+    <div class="big-number" id="total-cost">AED 0</div>
+    <div class="sub-text">
+      Based on <strong id="inactive-count">—</strong> employees estimated to be physically inactive — costing you through <strong>sick leave, reduced on-the-job output, and higher insurance claims.</strong>
+    </div>
+  </div>
+
+  <div class="results-grid">
+    <div class="metric">
+      <div class="m-label">Inactive employees</div>
+      <div class="m-val" id="res-inactive">—</div>
+      <div class="m-sub">~58% of workforce<br>UAE peer-reviewed avg</div>
+    </div>
+    <div class="metric">
+      <div class="m-label">Lost productivity days/yr</div>
+      <div class="m-val" id="res-days">—</div>
+      <div class="m-sub">Absenteeism + presenteeism</div>
+    </div>
+    <div class="metric">
+      <div class="m-label">Added insurance claims</div>
+      <div class="m-val" id="res-claims">—</div>
+      <div class="m-sub">vs. active workforce baseline</div>
+    </div>
+  </div>
+
+  <div class="sources">
+    <strong>Data sources:</strong> Inactivity rate — Nash et al., peer-reviewed UAE study (42% males / 28% females meet WHO guidelines). Productivity loss — WHO & Medibank (6.5 days/inactive employee/yr: 3.5 absenteeism + 3.0 presenteeism, Burton et al.). Insurance uplift — Vitality Health 2024 ($462 USD/employee, converted at 3.67 AED/USD). These are estimates based on published research, not a guarantee of outcomes specific to your organization.
+  </div>
+
+  <div class="velociti-card">
+    <div class="vc-label">If a structured program recovers 30%</div>
+    <div class="vc-number" id="velociti-save">AED 0</div>
+    <div class="vc-sub">Conservative estimate based on UAE workplace intervention data (SEHA Pure Health study, 2,300 participants, 73% completion rate). The 30% recovery is an assumption — actual outcomes depend on program design, engagement, and workforce profile.</div>
+  </div>
+
+  <div class="email-card" id="email-card">
+    <h3>Want a shareable summary?</h3>
+    <p>Enter your email and we'll send you a one-page PDF with your numbers and the methodology behind them. Optional — no follow-up unless you ask.</p>
+    <form id="email-form" onsubmit="submitEmail(event)">
+      <div class="email-row">
+        <input type="email" id="email-input" placeholder="your@company.com" required>
+        <button type="submit" class="btn-submit">Send it</button>
+      </div>
+      <div class="email-success" id="email-success">Done — check your inbox.</div>
+    </form>
+    <span class="skip-link" onclick="dismissEmail()">No thanks, I have what I need</span>
+  </div>
+
+  <div class="disclaimer">
+    Built by <a href="https://velociti.fitness">Velociti</a> — a UAE-based workforce movement platform. This tool uses published research to generate estimates. It is not financial or actuarial advice. <a href="mailto:aseel@velociti.fitness">Talk to us</a> if you want to dig into your specific numbers.
+  </div>
+
+  <div class="footer">
+    <a href="https://velociti.fitness">velociti.fitness</a> &nbsp;·&nbsp; <a href="mailto:aseel@velociti.fitness">aseel@velociti.fitness</a>
+  </div>
+
+</div>
+
+<script>
+  const FORMSPREE_ID = 'YOUR_FORMSPREE_ID'; // Replace with your Formspree form ID from formspree.io
+
+  let emailShown = false;
+  let interactionCount = 0;
+
+  function onSlider(id, val) {
+    const v = parseInt(val);
+    if (id === 'headcount') {
+      document.getElementById('headcount-val').textContent = v.toLocaleString();
+    } else {
+      document.getElementById('salary-val').textContent = v.toLocaleString();
+    }
+    interactionCount++;
+    calculate();
+    if (interactionCount >= 2 && !emailShown) {
+      setTimeout(() => {
+        document.getElementById('email-card').classList.add('visible');
+        emailShown = true;
+      }, 800);
+    }
+  }
+
+  function calculate() {
+    const headcount = parseInt(document.getElementById('headcount').value);
+    const salary = parseInt(document.getElementById('salary').value);
+
+    const inactivityRate = 0.58;
+    const inactive = Math.round(headcount * inactivityRate);
+
+    const dailyRate = salary / 22;
+    const absenceDays = 3.5;
+    const presenteeismDays = 3.0;
+    const productivityCost = inactive * (absenceDays + presenteeismDays) * dailyRate;
+
+    const claimsUpliftAED = 462 * 3.67;
+    const claimsCost = inactive * claimsUpliftAED;
+
+    const totalCost = Math.round(productivityCost + claimsCost);
+    const velocitiSave = Math.round(totalCost * 0.30);
+    const totalDays = Math.round(inactive * (absenceDays + presenteeismDays));
+
+    const el = document.getElementById('total-cost');
+    el.textContent = 'AED ' + totalCost.toLocaleString();
+    el.classList.remove('pulse');
+    void el.offsetWidth;
+    el.classList.add('pulse');
+
+    document.getElementById('inactive-count').textContent = inactive.toLocaleString() + ' employees';
+    document.getElementById('res-inactive').textContent = inactive.toLocaleString();
+    document.getElementById('res-days').textContent = totalDays.toLocaleString();
+    document.getElementById('res-claims').textContent = 'AED ' + Math.round(claimsCost).toLocaleString();
+    document.getElementById('velociti-save').textContent = 'AED ' + velocitiSave.toLocaleString();
+  }
+
+  function dismissEmail() {
+    document.getElementById('email-card').style.display = 'none';
+  }
+
+  async function submitEmail(e) {
+    e.preventDefault();
+    const email = document.getElementById('email-input').value;
+    const headcount = document.getElementById('headcount').value;
+    const salary = document.getElementById('salary').value;
+    const industry = document.getElementById('industry').value;
+    const totalCost = document.getElementById('total-cost').textContent;
+
+    try {
+      const res = await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email, headcount, salary, industry, totalCost })
+      });
+      if (res.ok) {
+        document.getElementById('email-success').style.display = 'block';
+        document.getElementById('email-input').disabled = true;
+        document.querySelector('.btn-submit').disabled = true;
+      }
+    } catch(err) {
+      document.getElementById('email-success').textContent = 'Something went wrong — email us directly at aseel@velociti.fitness';
+      document.getElementById('email-success').style.display = 'block';
+    }
+  }
+
+  calculate();
+</script>
+</body>
+</html>
